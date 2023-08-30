@@ -1,6 +1,6 @@
 // write service page before controller
 //service page will use knex | it will do all heavy lifting and will be where all the heavy lifting is done | remember controller is reception
-const knex = require("knex");
+const knex = require("../db/connection");
 
 // LIST function to select all movies
 
@@ -24,7 +24,7 @@ function showingList(){
 function read(movieId){
  return knex("movies")
     .select("*")
-    .where({"movies.movie_id":Number(movieId)})
+    .where("movies.movie_id","=",Number(movieId))
     .first()
 }
 module.exports = {

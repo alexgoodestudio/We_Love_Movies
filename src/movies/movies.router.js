@@ -4,7 +4,7 @@ const methodNotAllowed = require("../errors/methodNotAllowed");
 const theatersRouter = require("../theaters/theaters.router");
 const reviewsRouter = require("../reviews/reviews.router");
 
-console.log(controller);
+
 
 router.use("/:movieId/theaters", theatersRouter);
 router.use("/:movieId/reviews", reviewsRouter);

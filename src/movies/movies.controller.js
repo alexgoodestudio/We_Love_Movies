@@ -10,7 +10,7 @@ async function list(req,res){
   if(is_showing){
     res.json({ data: await service.showingList() })
   }else{
-    res.json({ data: await service.list() })
+    res.json({ data: await service.list(req.params.movieId) })
   }
 }
 
@@ -22,9 +22,11 @@ async function movieExists(req, res, next){
     res.locals.movie = movieData;
     return next();
   }
-  return next({status: 404, message: "Movie cannot be found."});
+  return next({
+    status: 404,
+    message: "Movie cannot be found."});
 }
-
+// jacky help | review
 async function read(req, res, next){
   res.json({data: res.locals.movie});
 }

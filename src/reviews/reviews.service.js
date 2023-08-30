@@ -1,37 +1,51 @@
-const knex = require("knex");
+const knex = require("../db/connection");
+const mapProperties = require("../utils/map-properties")
+
+
+async function readCriticInformation(critic_id){
+  return knex("critics")
+    .where({critic_id})
+    .first()
+} 
+
+async function addCritic(review){
+  review.critic = await readCriticInformation(review.critic_id)
+  return review
+} 
 
 //need to join reviews and critics on critic_id
-function list() {
-  return knex("reviews as r")
-    .join("critics as c", "r.critic_id", "c.critic_id")
-    .select("r.*", "c.*");
+function list(movie_id) {
+  return knex("reviews")
+    .where({movie_id})
+    .then((reviews) => Promise.all(reviews.map(addCritic)) )
 }
 
 //read function to read all reviews for a specific movie
 function read(reviewId){
 return knex("reviews")
-.select("*")
-.where({review_id: reviewId })
-.first()
+  .select("*")
+  .where({review_id: reviewId})
+  .first()
 }
 
 //needs updatedReview prop passed to it
 function update(reviewData) {
-  return knex("reviews as r")
-    .where({ review_id: reviewData.review_id })
+  return knex("reviews")
+    .where({review_id: reviewData.review_id})
     .update(reviewData, "*")
-    .then((updatedRows) => updatedRows[0]);
+    .then(() => read(reviewData.review_id))
+    .then(addCritic);
+    
 }
 
-function destroy(review_id) {
-    return knex("reviews").where({id: review_id }).del();
+function destroy(reviewId) {
+    return knex("reviews").where({review_id: reviewId }).del();
   }
   
-
 module.exports={
-    list,
+//  list,
     read,
     update,
-    delete: destroy,
+    destroy,
 }
 

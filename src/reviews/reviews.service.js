@@ -1,8 +1,10 @@
 const knex = require("knex");
 
-function list(){
-return knex("reviews")
-.select("*")
+//need to join reviews and critics on critic_id
+function list() {
+  return knex("reviews as r")
+    .join("critics as c", "r.critic_id", "c.critic_id")
+    .select("r.*", "c.*");
 }
 
 //read function to read all reviews for a specific movie
@@ -13,19 +15,18 @@ return knex("reviews")
 .first()
 }
 
-//need to join reviews and critics on critic_id
 //needs updatedReview prop passed to it
-function update(updatedReview){
-return knex("reviews as r")
-.select("*")
-.join("critics as c", r.critics_id, c.critics_id)
-.update(updatedReview, "*")
-.then((updatedReview) => updatedReview[0]) 
+function update(reviewData) {
+  return knex("reviews as r")
+    .where({ review_id: reviewData.review_id })
+    .update(reviewData, "*")
+    .then((updatedRows) => updatedRows[0]);
 }
 
 function destroy(review_id) {
-    return knex("reviews").where({ review_id }).del();
+    return knex("reviews").where({id: review_id }).del();
   }
+  
 
 module.exports={
     list,

@@ -24,9 +24,11 @@ function showingList(){
 function read(movieId){
  return knex("movies")
     .select("*")
-    .where({"movies.movie_id":Number(":movieId")})
+    .where({"movies.movie_id":Number(movieId)})
+    .first()
 }
 module.exports = {
 list,
+showingList,
 read,
 }

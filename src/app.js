@@ -13,4 +13,9 @@ app.use("/movies",moviesRouter);
 app.use("/reviews",reviewsRouter);
 app.use("/theaters",theatersRouter);
 
+app.use((error, req, res, next) => {
+    console.error(error);
+    res.send(error);
+  });
+
 module.exports = app;

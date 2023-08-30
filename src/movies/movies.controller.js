@@ -6,7 +6,7 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
   //- it will either display all movies
   //- it will display only movies where query param is true
 async function list(req,res){
-  const {is_showing} = query.params;
+  const {is_showing} = req.query;
   if(is_showing){
     res.json({ data: await service.showingList() })
   }else{
@@ -15,25 +15,20 @@ async function list(req,res){
 }
 
 //read validator
-async function movieExists(req,res,next){
-  const movieId = Number(req.params.movieId);
-  const foundMovie = movies.find(movie => Number(movie.id === movieId.toString()))
-  if(foundMovie){
-    res.locals.movie= foundMovie;
-    return next()
-  }else{
-    next({
-      status:404,
-      message:`Movie Id not found ${movieId}`
-    })
+async function movieExists(req, res, next){
+  const {movieId} = req.params;
+  const movieData = await service.read(movieId);
+  if(movieData){
+    res.locals.movie = movieData;
+    return next();
   }
+  return next({status: 404, message: "Movie cannot be found."});
 }
 
-//read returns a single movie by id
-//if given ID does not match respond with error message with a status 404
-function read(req,res,next){
-  res.status(200).send({data:res.locals.movie})
+async function read(req, res, next){
+  res.json({data: res.locals.movie});
 }
+
 
 module.exports = {
     list:[asyncErrorBoundary(list)],

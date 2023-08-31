@@ -1,7 +1,6 @@
 const knex = require("../db/connection");
 const mapProperties = require("../utils/map-properties")
 
-
 async function readCriticInformation(critic_id){
   return knex("critics")
     .where({critic_id})
@@ -43,7 +42,7 @@ function destroy(reviewId) {
   }
   
 module.exports={
-//  list,
+    list,
     read,
     update,
     destroy,

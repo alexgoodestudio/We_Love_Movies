@@ -54,11 +54,11 @@ async function update(req, res, next) {
   res.json({ data });
 }
 
-function hasId(req,res,next){
-  if(req.params.movieId){
-  return next()
+function hasId(req, res, next) {
+  if (req.params.movieId) {
+    return next();
   }
-  methodNotAllowed(req, res, next)
+  return methodNotAllowed(req, res, next);
 }
 
 function noId(req,res,next){
@@ -70,10 +70,9 @@ function noId(req,res,next){
 
 //------------------------------------------------------
   module.exports = {
-    destroy: [noId, asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
     list: [hasId, asyncErrorBoundary(list)],
+    destroy: [noId, asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
     update: [noId, asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)],
-
   };
   
 

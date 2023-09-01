@@ -5,7 +5,6 @@ const errorHandler = require("./errors/errorHandler");
 const cors = require('cors');
 const app = express();
 
-
 const moviesRouter = require("./movies/movies.router");
 const reviewsRouter = require("./reviews/reviews.router");
 const theatersRouter = require("./theaters/theaters.router");
@@ -25,6 +24,5 @@ app.use((error, _request, response, _next) => {
   const { status = 500, message = "Something went wrong!" } = error;
   response.status(status).json({ error: message });
 });
-
 
 module.exports = app;

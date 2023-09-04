@@ -8,9 +8,7 @@ const app = express();
 const moviesRouter = require("./movies/movies.router");
 const reviewsRouter = require("./reviews/reviews.router");
 const theatersRouter = require("./theaters/theaters.router");
-app.use(cors({
-  origin: 'https://we-love-movies-frontend-y1gr.onrender.com/', 
-}));
+app.use(cors());
 app.use(express.json());
 
 app.use("/movies",moviesRouter);

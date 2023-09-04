@@ -1,14 +1,16 @@
 if (process.env.USER) require("dotenv").config();
+// const notFound = require("./errors/notFound");
+// const errorHandler = require("./errors/errorHandler");
 const express = require("express");
-const notFound = require("./errors/notFound");
-const errorHandler = require("./errors/errorHandler");
 const cors = require('cors');
 const app = express();
 
 const moviesRouter = require("./movies/movies.router");
 const reviewsRouter = require("./reviews/reviews.router");
 const theatersRouter = require("./theaters/theaters.router");
-app.use(cors());
+app.use(cors({
+  origin: 'https://we-love-movies-frontend-y1gr.onrender.com/', 
+}));
 app.use(express.json());
 
 app.use("/movies",moviesRouter);

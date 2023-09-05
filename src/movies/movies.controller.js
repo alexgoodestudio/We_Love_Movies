@@ -5,6 +5,7 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 //list will have two puropse:
   //- it will either display all movies
   //- it will display only movies where query param is true
+  
 async function list(req,res){
   const {is_showing} = req.query;
   if(is_showing){
@@ -26,9 +27,9 @@ async function movieExists(req, res, next){
     status: 404,
     message: "Movie cannot be found."});
 }
-// jacky help | review
-async function read(req, res, next){
-  res.json({data: res.locals.movie});
+
+async function read(req, res){
+  res.status(200).json({data: res.locals.movie});
 }
 
 

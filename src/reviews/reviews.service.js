@@ -1,5 +1,4 @@
 const knex = require("../db/connection");
-const mapProperties = require("../utils/map-properties")
 
 async function readCriticInformation(critic_id){
   return knex("critics")
@@ -13,9 +12,9 @@ async function addCritic(review){
 } 
 
 //need to join reviews and critics on critic_id
-function list(movie_id) {
+function list(movieId) {
   return knex("reviews")
-    .where({movie_id})
+    .where({movie_id : movieId})
     .then((reviews) => Promise.all(reviews.map(addCritic)) )
 }
 
@@ -34,11 +33,12 @@ function update(reviewData) {
     .update(reviewData, "*")
     .then(() => read(reviewData.review_id))
     .then(addCritic);
-    
 }
 
 function destroy(reviewId) {
-    return knex("reviews").where({review_id: reviewId }).del();
+    return knex("reviews")
+    .where({review_id: reviewId })
+    .del();
   }
   
 module.exports={

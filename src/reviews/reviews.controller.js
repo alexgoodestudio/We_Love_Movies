@@ -2,34 +2,26 @@ const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const methodNotAllowed = require("../errors/methodNotAllowed")
 //------------------------------------------------------
-
 //if id is valid, store in res.locals
 // If the ID is incorrect, return a 404
 async function reviewExists(req, res, next) {
   const { reviewId } = req.params;
-  const review = await service.read(req.params.reviewId);
-//   console.log(review, reviewId, "REVIEW!!~!~!!~!")
+  const review = await service.read(reviewId);
   if (review) {
     res.locals.review = review;
     return next();
   } 
-    return next({
+    next({
       status: 404,
       message: "Review cannot be found.",
     });
 }
 //------------------------------------------------------
-async function read(req, res, next){
-  res.json({data: res.locals.review});
-}
-//------------------------------------------------------
 
 //needs to be able to return all reviews for a movie
 //needs to be able to return specific review of movie
-
 async function list(req, res, next) {
     const data = await service.list(req.params.movieId);
-//     console.log(data,"LIST DATAAAAAAAA")
     res.json({ data });
 }
 
@@ -48,7 +40,7 @@ async function update(req, res, next) {
   const updatedReview = {
     ...res.locals.review,
     ...req.body.data,
-    review_id:res.locals.review.review_id ,
+    ...review_id,
   };
   const data = await service.update(updatedReview);
   res.json({ data });

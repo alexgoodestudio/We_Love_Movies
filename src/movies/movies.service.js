@@ -9,13 +9,12 @@ function list(){
         .select("*")
 }
 
-// isShowing function to select only movies that iShowing in movies_theaters are true
-
+// isShowing function to select only movies that isShowing in movies_theaters are true
 function showingList(){
     return knex("movies as m")
         .select("m.*")
         .join("movies_theaters as mt", "m.movie_id", "mt.movie_id")
-        .where("mt.is_showing","=", true)
+        .where({"mt.is_showing" : true})
         .groupBy("m.movie_id")
         .orderBy("m.movie_id");
 }
@@ -24,9 +23,11 @@ function showingList(){
 function read(movieId){
  return knex("movies")
     .select("*")
-    .where("movies.movie_id","=",Number(movieId))
+    .where({"movies.movie_id" : movieId})
     .first()
 }
+
+ 
 module.exports = {
 list,
 showingList,
